@@ -1,0 +1,95 @@
+import {produce} from "immer";
+import {createAction, handleActions} from "redux-actions";
+import { setCookie, getCookie, deleteCookie } from "../../shared/Cookie";
+
+import { auth } from "../../shared/firebase";
+
+//액션타입
+const LOG_OUT = "LOG_OUT";
+const GET_USER = "GET_USER";
+const SET_USER = "SET_USER";
+
+//액션생성함수  타입, 받아온 파라미터를 넘겨줌
+const logOut = createAction(LOG_OUT, (user) => ({ user }));
+const getUser = createAction(GET_USER, (user) => ({ user }));
+const setUser = createAction(SET_USER, (user) => ({ user }));
+
+//이니셜스테이트
+const initialState = {
+    user: null,
+    is_login: false,
+  };
+
+const user_initial = {
+  user_name: 'kzhxxn',
+}
+
+
+//미들웨어액션
+const loginAction = (user) => {
+    return function (dispatch, getState, {history}){
+        console.log(history);
+        dispatch(setUser(user));
+        history.push('/');
+    }
+}
+
+const signupFB = (id, pwd, user_name) => {
+  return function (dispatch, getState, {history}){
+
+    auth
+      .createUserWithEmailAndPassword(id, pwd)
+      .then((user) => {
+
+        console.log(user);
+        
+        auth.currentUser.updateProfile({
+          displayName: user_name,
+        }).then(()=>{
+          dispatch(setUser({user_name: user_name, id: id, user_profile: ''}));
+          history.push('/');
+        }).catch((error) => {
+          console.log(error);
+        });
+
+        // Signed in
+        // ...
+      })
+      .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+
+        console.log(errorCode, errorMessage);
+        // ..
+      });
+
+  }
+}
+
+//리듀서
+export default handleActions({
+     [SET_USER]: (state, action) =>
+        produce(state, (draft) => {
+          setCookie("is_login", "success");
+          draft.user = action.payload.user;
+          draft.is_login = true;
+        }),
+    [LOG_OUT]: (state, action) =>
+        produce(state, (draft) => {
+          deleteCookie("is_login");
+          draft.user = null;
+                  draft.is_login = false;
+        }),
+    [GET_USER]: (state, action) => produce(state, (draft) => {}),
+    },
+    initialState
+  );
+//export
+  const actionCreators = {
+    getUser,
+    logOut,
+    loginAction,
+    signupFB,
+  };
+  
+  export { actionCreators };

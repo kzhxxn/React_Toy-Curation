@@ -1,15 +1,15 @@
 import React from 'react'
-import { Container } from 'react-bootstrap'
+import {Grid} from '../elements'
 
 const Footer = () => {
     return (
-        <footer>
-            <Container>
+        <Grid>
+            <Grid>
                 <div style={{textAlign: "center"}}>
                     &copy; 2021 KZHXXN. All Right Reserved.
                 </div>
-            </Container>
-        </footer>
+            </Grid>
+        </Grid>
            
     )
 }

@@ -10,6 +10,9 @@ import PostList from "../pages/PostList";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import PostWrite from '../pages/PostWrite';
+import PostDetail from '../pages/PostDetail';
+import Search from './Search';
+import Notification from "../pages/Notification";
 
 import Header from "../components/Header";
 import {Grid, Button} from "../elements";
@@ -36,15 +39,19 @@ function App() {
 
   return (
     <React.Fragment>
-      <Grid>
+      
         <Header></Header>
         <ConnectedRouter history={history}>
           <Route path="/" exact component={PostList} />
           <Route path="/login" exact component={Login} />
           <Route path="/signup" exact component={Signup}/>
           <Route path="/write" exact component={PostWrite}/>
+          <Route path="/write/:id" exact component={PostWrite}/>
+          <Route path="/post/:id" exact component={PostDetail}/>
+          <Route path="/search" exact component={Search}/>
+          <Route path="/noti" exact component={Notification} />
         </ConnectedRouter>
-      </Grid>
+      
       <Permit>
         <Button is_float text="+" _onClick={() => {history.push('/write')}}></Button>
       </Permit>

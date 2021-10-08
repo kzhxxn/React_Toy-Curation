@@ -41,12 +41,10 @@ const Header = (props) => {
                         </Grid>
                         
                         <Grid is_flex>
-                            <Button text="내정보"></Button>
-                            <Button text="알림"></Button>
                             {/* 쿠키를 지워줘도 업데이트가 되지않음
                             렌더링이 되는 조건은
                             프롭스가 바뀌거나 스테이트가 바뀌어야함 */}
-                            <Button text="로그아웃" _onClick={() =>{dispatch(userActions.logoutFB())
+                            <Button width= " 20px" text="로그아웃" _onClick={() =>{dispatch(userActions.logoutFB())
                             }}></Button>
                         </Grid>
                     </Grid>
@@ -82,6 +80,12 @@ const Container = styled.div`
 display: flex;
 align-items: center; 
 background-color: #F8F9FA;
+width: 100%;
+position : fixed;
+top: 0;
+  left: 0;
+  right: 0;
+z-index: 9999;
 `;
 
 Header.defaultProps = {}

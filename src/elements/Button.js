@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const Button = (props) => {
 
-    const {text, _onClick, is_float, children} = props;
+    const {text, _onClick, is_float, children, margin, width, padding} = props;
 
     if(is_float) {
     return (
@@ -12,33 +12,43 @@ const Button = (props) => {
       </React.Fragment>
     );
   }
+  const styles = {
+    margin: margin,
+    width: width,
+    padding: padding,
+  };
+
     return (
       <React.Fragment>
-        <ElButton onClick={_onClick}>{text? text: children}</ElButton>
+        <ElButton {...styles} onClick={_onClick}>{text? text: children}</ElButton>
       </React.Fragment>
     );
 }
 
 
 Button.defaultProps = {
-    text: false,
-    children: null,
-    _onClick: () => {},
-    is_float: false,
+  text: false,
+  children: null,
+  _onClick: () => {},
+  is_float: false,
+  margin: false,
+  width: '100%',
+  padding: "12px 0px",
 }
 
 const ElButton = styled.button`
     width: 100%;
     background-color: #3459e6;
     color: #ffffff;
-    padding: 12px 0px;
     box-sizing: border-box;
     border: none;
-    border-radius: 4px;
+    border-radius: 1px;
+    padding: ${(props) => props.padding};
+    ${(props) => (props.margin ? `margin: ${props.margin};` : "")}
     font-size: ${(props) => props.size};
-  font-family: 'Noto Sans CJK KR';
-  font-style: normal;
-  font-weight: ${(props) => (props.bold? "600" : "400")};
+    font-family: 'Noto Sans CJK KR';
+    font-style: normal;
+    font-weight: ${(props) => (props.bold? "600" : "400")};
 `;
 
 const FloatButton = styled.div`

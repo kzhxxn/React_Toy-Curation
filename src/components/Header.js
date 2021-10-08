@@ -6,10 +6,15 @@ import { getCookie, deleteCookie } from "../shared/Cookie";
 import {useSelector, useDispatch} from "react-redux"
 import { actionCreators as userActions } from "../redux/modules/user";
 
+import {history} from "../redux/configureStore"
+import { apiKey } from "../shared/firebase"
+
 const Header = (props) => {
 
     const dispatch = useDispatch();
     const is_login = useSelector((state) => state.user.is_login)
+    const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`;
+    const is_session = sessionStorage.getItem(_session_key)? true : false;
     //쿠키 있없을 스테이트로 관리
     //const [갱신값, 갱신하려고 쓰는 함수] = useState(초기값);
     // const [is_login, setIsLogin] = React.useState(false);
@@ -25,7 +30,7 @@ const Header = (props) => {
     //         setIsLogin(false)
     //     }
     // })
-    if(is_login){
+    if(is_login && is_session){
         return (
             <React.Fragment>
                 <Container>
@@ -41,7 +46,8 @@ const Header = (props) => {
                             {/* 쿠키를 지워줘도 업데이트가 되지않음
                             렌더링이 되는 조건은
                             프롭스가 바뀌거나 스테이트가 바뀌어야함 */}
-                            <Button text="로그아웃" _onClick={() =>{dispatch(userActions.logOut({}))}}></Button>
+                            <Button text="로그아웃" _onClick={() =>{dispatch(userActions.logoutFB())
+                            }}></Button>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -59,8 +65,12 @@ const Header = (props) => {
                     </Grid>
                     
                     <Grid is_flex>
-                        <Button text="로그인"></Button>
-                        <Button text="회원가입"></Button>
+                        <Button text="로그인" _onClick={() => {
+                            history.push('/login');
+                        }}></Button>
+                        <Button text="회원가입" _onClick={() => {
+                            history.push('/signup');
+                        }}></Button>
                     </Grid>
                 </Grid>
             </Grid>
